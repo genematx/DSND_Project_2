@@ -41,6 +41,8 @@ def clean_data(df):
     cat_split.columns = cat_split.iloc[0,:].apply(lambda x : x[:-2])
     # Convert the entries to 0/1
     cat_split = cat_split.applymap(lambda x : x[-1]).astype('int')
+    # Replace erroneous values ('2' corresponds to the 'No' answer)
+    cat_split.replace({2:0}, inplace=True)
     # Combine with the rest of the dataframe
     df = df.loc[:, df.columns != 'categories'].join(cat_split)
 

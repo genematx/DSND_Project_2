@@ -114,3 +114,4 @@ dmypy.json
 .pyre/
 
 disaster_response_pipeline_project/
+*.db
