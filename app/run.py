@@ -4,7 +4,7 @@ import pandas as pd
 
 from flask import Flask
 from flask import render_template, request, jsonify
-from plotly.graph_objs import Bar
+import plotly.graph_objs as go
 from sklearn.externals import joblib
 from sqlalchemy import create_engine
 import dill
@@ -51,6 +51,29 @@ def index():
     graphs = [
         {
             'data': [
+                go.Bar(
+                    x=genre_names,
+                    y=genre_counts
+                )
+            ],
+
+            'layout': {
+                'title': 'Distribution of Message Genres',
+                'yaxis': {
+                    'title': "Count"
+                },
+                'xaxis': {
+                    'title': "Genre"
+                }
+            }
+        },
+
+        {
+            'data': [
+                Bar(
+                    x=genre_names,
+                    y=genre_counts
+                ),
                 Bar(
                     x=genre_names,
                     y=genre_counts
@@ -58,6 +81,7 @@ def index():
             ],
 
             'layout': {
+                'grid': {'rows': 1, 'columns': 2, 'pattern': 'independent'},
                 'title': 'Distribution of Message Genres',
                 'yaxis': {
                     'title': "Count"
