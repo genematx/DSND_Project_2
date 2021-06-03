@@ -16,6 +16,7 @@ from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.multioutput import MultiOutputClassifier
+import dill
 
 
 class LengthEstimator(BaseEstimator, TransformerMixin):

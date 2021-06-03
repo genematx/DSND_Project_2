@@ -45,6 +45,8 @@ def clean_data(df):
     cat_split.replace({2:0}, inplace=True)
     # Combine with the rest of the dataframe
     df = df.loc[:, df.columns != 'categories'].join(cat_split)
+    # Remove uninformative columns
+    df = df.loc[:, df.columns != 'child_alone']
 
     return df
 

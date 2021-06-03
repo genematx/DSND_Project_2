@@ -4,13 +4,36 @@ import pandas as pd
 
 from flask import Flask
 from flask import render_template, request, jsonify
-import plotly.graph_objs as go
+from plotly.graph_objs import Bar, Sunburst
 from sklearn.externals import joblib
 from sqlalchemy import create_engine
 import dill
+import pip
 
+import re
+import nltk
+nltk.download(['punkt', 'stopwords', 'wordnet'])
+from nltk.corpus import stopwords
+from nltk.stem.wordnet import WordNetLemmatizer
 
 app = Flask(__name__)
+
+def install_with_pip(package, args=None):
+    """Insatlls a package with pip.
+    Args:
+        package: str
+            Name of the package to install
+        args: list of str
+            List of command attributes, e.g. ['-U', '--force-reinstall']
+    """
+
+    if args is None:
+        args = []
+
+    if hasattr(pip, 'main'):
+        pip.main(['install', package]+args)
+    else:
+        pip._internal.main(['install', package]+args)
 
 def classify(model, query):
     """Classify a query using a trained model.
@@ -20,21 +43,25 @@ def classify(model, query):
         query: str
             A message that needs to be classified.
     Returns:
-        cls_labels: dict
-            Results of classification with keys corresponding to properties (derived
-            from the column labels in the original df) and values -- to labels,
-            e.g.: 'wethaer_related': 0.
+        cls_labels: list of int
+            Results of classification with each entry correponding to a specific
+            class in the order of columns in the original database.
     """
-    cls_labels = {'related':1, 'offer':1, 'request':0, 'weather_related':1}
-    return cls_labels
+
+    print('Classifying message \'{}\' ...'.format(query))
+
+    return model.predict([query]).ravel()
 
 # load data
 engine = create_engine('sqlite:///../data/DisasterResponse.db')
 df = pd.read_sql_table('merged', engine)
+classification_labels = df.columns[4:]
 
 # load model
 with open("../models/classifier.pkl", 'rb') as fp:
         model = dill.load(fp)
+
+classify(model, 'Query to classify')
 
 # index webpage displays cool visuals and receives user input text for model
 @app.route('/')
@@ -42,19 +69,26 @@ with open("../models/classifier.pkl", 'rb') as fp:
 def index():
 
     # extract data needed for visuals
-    # TODO: Below is an example - modify to extract data for your own visuals
     genre_counts = df.groupby('genre').count()['message']
     genre_names = list(genre_counts.index)
+
+    # Count related and unrelated messages
+    related_counts = df[['related', 'request', 'offer']].sum()
+    related_counts['unrelated'] = len(df)-related_counts['related']
+    related_counts['related'] -= (related_counts.request+related_counts.offer)
 
     # create visuals
     # TODO: Below is an example - modify to create your own visuals
     graphs = [
         {
             'data': [
-                go.Bar(
-                    x=genre_names,
-                    y=genre_counts
-                )
+                Sunburst(
+                            labels=["Total", "Related", "Unrelated", "Request", "Offer"],
+                            parents=["", "Total", "Total", "Related", "Related"],
+                            values=[0, related_counts.related, related_counts.unrelated,
+                                    related_counts.request, related_counts.offer],
+                            hoverinfo='label+percent parent'
+                        )
             ],
 
             'layout': {
@@ -109,14 +143,14 @@ def go():
     print(query)
 
     # use model to predict classification for query
-    # cls_labels = model.predict([query])[0]
-    classification_results = classify(model, query)
+    classification_result = {label:value for label, value in \
+                            zip(classification_labels, classify(model, query))}
 
     # This will render the go.html Please see that file.
     return render_template(
         'go.html',
         query=query,
-        classification_result=classification_results
+        classification_result = classification_result
     )
 
 
@@ -125,4 +159,7 @@ def main():
 
 
 if __name__ == '__main__':
+    # Update plotly to display Sunburst charts
+    print(int(plotly.__version__[0]) == 4)
+
     main()
