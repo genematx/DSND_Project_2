@@ -3,48 +3,42 @@
 # ETL and ML Pipelines for Processing Disaster Response Messages
 
 
- ### Table of Contents
-
- 1. [Description](#description)
- 2. [Installation](#installation)
- 3. [Project Motivation](#motivation)
- 4. [File Descriptions](#files)
- 5. [Results](#results)
- 6. [Licensing, Authors, and Acknowledgements](#licensing)
-
  ## Description <a name="description"></a>
 
- The repository contains the code used in Project 2 of Udacity Data Science Nanodegree. The main goal of the project is to categorize text messages sent during a natural disaster into several classes to rapidly determine if any action is needed.
+ The repository contains the code used in Project 2 of Udacity Data Science Nanodegree. The main goal of the project is to categorize text messages sent during a natural disaster into several classes to rapidly determine if any action is needed. The result is an on-line categorization system that on the title page displays brief statistics about the training dataset and allows the user to enter and classify a query message using the trained model.
+
+ The motivation for this project is to gain practical skills in creating and deploying ETL and ML pipelines. The main highlights of the project include handling data in the form of CSV files and a relational database, feature engineering with natural language processing tools, and training a set of support vector machine classifiers.
+
 
  ## Installation <a name="installation"></a>
 
  The code is written and tested in Python 3.5. Additional libraries to be installed beyond the standard Anaconda distribution are:
 
+- nltk 3.6.1 for natural language processing
+- plotly 4.14.3 for displaying figures
+- scikit-learn 0.20.0 for machine learning related tasks
+- pandas 0.23.4 for handling the dataset
+- sqlalchemy 1.3.24 for working with a relational database
+- dill 0.3.0 for serializing and saving the model
 
- ## Project Motivation<a name="motivation"></a>
+The code has been developed and tested using the cited versions of the packages.
 
-The motivation for this project is to gain practical skills in creating and deploying ETL and ML pipelines.
 
  ## File Descriptions <a name="files"></a>
 
+  data/process_data.py - a script that loads the original messages and labels from .csv files (disaster_categories.csv and disaster_messages.csv), cleans the data, converts the categories into binary format and stores the resulting table in the SQLite database file, DisasterResponse.db.
 
- ## Results<a name="results"></a>
+  models/train_classifier.py - a script that loads the data from an SQLite database, creates an NLP-ML pipeline, and trains it with cross-validation. The output is a serialized model in the classifier.pkl file.
+
+  app/run.py - the main backend script that handles the generation of the web pages. The templates for the pages are stored in the templates\ folder.
 
 
+ ## How to run the app in Udacity Workspace
 
- ## Licensing, Authors, Acknowledgements<a name="licensing"></a>
+ The project is intended to be run in the Udacity Workspace. For this:
 
-
- # How to run the app in Udacity Workspace
-
- You'll find all the files you need for this exercise in the 1_flask_exercise folder. Your task is to add a new route to the routes.py file and a new html file for this route.
-
- From the 1_flask_exercise/worldbankapp folder, open the routes.py file and the templates folder. Follow the instructions in the TODOS. Once you've changed the files, follow these instructions to see the web app:
  1. Open a Terminal
- 2. Enter the command `env | grep WORK` to find your workspace variables
- 3. Enter the command `cd 1_flask_exercise` to go into the 1_flask_exercise folder.
- 4. Enter the command `python worldbank.py`
- 5. Open a new web browser window and go to the web address:
- `http://WORKSPACESPACEID-3001.WORKSPACEDOMAIN` replacing WORKSPACEID and WORKSPACEDOMAIN with your values.
-
- In the workspace, you'll also see a folder called solutions. Inside the solutions folder is another folder called 1_flask_exercise, which contains an example solution.
+ 2. Enter the command `env | grep WORK` to find the current workspace variables
+ 3. In the app\ folder, run the command `python run.py`
+ 4. Open a new web browser window and go to the web address:
+ `http://WORKSPACESPACEID-3001.WORKSPACEDOMAIN` replacing WORKSPACEID and WORKSPACEDOMAIN with relevant values from Step 1.
