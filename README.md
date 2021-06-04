@@ -41,3 +41,9 @@ The code has been developed and tested using the cited versions of the packages.
  3. In the app\ folder, run the command `python run.py`
  4. Open a new web browser window and go to the web address:
  `http://WORKSPACESPACEID-3001.WORKSPACEDOMAIN` replacing WORKSPACEID and WORKSPACEDOMAIN with relevant values from Step 1.
+
+
+ ## Acknowledgements
+
+ The disaster relief dataset for this project was kindly provided by <a href="https://en.wikipedia.org/wiki/Figure_Eight_Inc">Figure Eight</a>, a machine learning and artificial intelligence company, currently a part of <a href="https://appen.com/">Appen</a>.
+ The help from contributors on the Udacity discussion board is gratefully acknowledged.
