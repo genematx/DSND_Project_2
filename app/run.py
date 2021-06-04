@@ -153,6 +153,7 @@ def main():
 
 if __name__ == '__main__':
     # Update plotly to display Sunburst charts
-    print(int(plotly.__version__[0]) == 4)
+    if int(plotly.__version__[0]) < 4:
+        print('\nA version of plotly >4 is required.\nPlease update plotly by running \'pip install plotly -U\'.\n')
 
     main()
