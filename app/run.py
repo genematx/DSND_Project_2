@@ -5,6 +5,7 @@ import pandas as pd
 from flask import Flask
 from flask import render_template, request, jsonify
 from plotly.graph_objs import Bar, Sunburst
+from plotly.subplots import make_subplots
 from sklearn.externals import joblib
 from sqlalchemy import create_engine
 import dill
@@ -61,8 +62,6 @@ classification_labels = df.columns[4:]
 with open("../models/classifier.pkl", 'rb') as fp:
         model = dill.load(fp)
 
-classify(model, 'Query to classify')
-
 # index webpage displays cool visuals and receives user input text for model
 @app.route('/')
 @app.route('/index')
@@ -73,22 +72,38 @@ def index():
     genre_names = list(genre_counts.index)
 
     # Count related and unrelated messages
-    related_counts = df[['related', 'request', 'offer']].sum()
-    related_counts['unrelated'] = len(df)-related_counts['related']
-    related_counts['related'] -= (related_counts.request+related_counts.offer)
+    counts = df[['related', 'request', 'offer', 'weather_related', 'aid_related', 'infrastructure_related']].sum()
+    counts['unrelated'] = len(df)-counts['related']
+    counts['related'] -= (counts.request+counts.offer)
 
-    # create visuals
-    # TODO: Below is an example - modify to create your own visuals
+    # create a plotly figure, convert it to dict and add to the list of graphs
+    fig = make_subplots(rows=1, cols=2, shared_yaxes=True,
+                        specs=[[{"type": "pie"}, {"type": "bar"}]])
+
+    fig.add_trace(Sunburst(
+        labels=["Total", "Related", "Unrelated", "Request", "Offer"],
+        parents=["", "Total", "Total", "Related", "Related"],
+        values=[0, counts.related, counts.unrelated, counts.request, counts.offer],
+        hoverinfo='label+percent parent'
+    ),
+                  1, 1)
+
+    fig.add_trace(Bar(
+                        x=["Weather", "Aid", "Infrastructure"],
+                        y=counts[['weather_related', 'aid_related', 'infrastructure_related']]
+                    ),
+            1, 2)
+
+    fig.update_layout(showlegend=False, title='Distribution of Messages by Type')
+
+
     graphs = [
         {
             'data': [
-                Sunburst(
-                            labels=["Total", "Related", "Unrelated", "Request", "Offer"],
-                            parents=["", "Total", "Total", "Related", "Related"],
-                            values=[0, related_counts.related, related_counts.unrelated,
-                                    related_counts.request, related_counts.offer],
-                            hoverinfo='label+percent parent'
-                        )
+                Bar(
+                    x=genre_names,
+                    y=genre_counts
+                )
             ],
 
             'layout': {
@@ -102,29 +117,7 @@ def index():
             }
         },
 
-        {
-            'data': [
-                Bar(
-                    x=genre_names,
-                    y=genre_counts
-                ),
-                Bar(
-                    x=genre_names,
-                    y=genre_counts
-                )
-            ],
-
-            'layout': {
-                'grid': {'rows': 1, 'columns': 2, 'pattern': 'independent'},
-                'title': 'Distribution of Message Genres',
-                'yaxis': {
-                    'title': "Count"
-                },
-                'xaxis': {
-                    'title': "Genre"
-                }
-            }
-        }
+        fig.to_dict()
     ]
 
     # encode plotly graphs in JSON
