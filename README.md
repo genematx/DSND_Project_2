@@ -1,7 +1,6 @@
-# Udacity DS Nanodegree
-# Project 2
-# ETL and ML Pipelines for Processing Disaster Response Messages
+# Udacity DS Nanodegree -- Project 2
 
+ # ETL and ML Pipelines for Processing Disaster Response Messages
 
  ## Description <a name="description"></a>
 
