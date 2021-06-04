@@ -2,8 +2,6 @@
 
  # ETL and ML Pipelines for Processing Disaster Response Messages
 
- ## Description <a name="description"></a>
-
  The repository contains the code used in Project 2 of Udacity Data Science Nanodegree. The main goal of the project is to categorize text messages sent during a natural disaster into several classes to rapidly determine if any action is needed. The result is an on-line categorization system that on the title page displays brief statistics about the training dataset and allows the user to enter and classify a query message using the trained model.
 
  The motivation for this project is to gain practical skills in creating and deploying ETL and ML pipelines. The main highlights of the project include handling data in the form of CSV files and a relational database, feature engineering with natural language processing tools, and training a set of support vector machine classifiers.
@@ -30,6 +28,8 @@ The code has been developed and tested using the cited versions of the packages.
   models/train_classifier.py - a script that loads the data from an SQLite database, creates an NLP-ML pipeline, and trains it with cross-validation. The output is a serialized model in the classifier.pkl file.
 
   app/run.py - the main backend script that handles the generation of the web pages. The templates for the pages are stored in the templates\ folder.
+
+  ETL Pipeline Preparation.ipynb and ML Pipeline Preparation.ipynb - IPython notebooks used to build and test the pipelines (not required to run the main web app).
 
 
  ## How to run the app in Udacity Workspace
