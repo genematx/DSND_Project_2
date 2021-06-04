@@ -48,7 +48,7 @@ def classify(model, query):
             Results of classification with each entry correponding to a specific
             class in the order of columns in the original database.
     """
-
+    
     print('Classifying message \'{}\' ...'.format(query))
 
     return model.predict([query]).ravel()
@@ -76,7 +76,7 @@ def index():
     counts['unrelated'] = len(df)-counts['related']
     counts['related'] -= (counts.request+counts.offer)
 
-    # create a plotly figure, convert it to dict and add to the list of graphs
+    # create a plotly figure, convert it to dict, and add to the list of graphs
     fig = make_subplots(rows=1, cols=2, shared_yaxes=True,
                         specs=[[{"type": "pie"}, {"type": "bar"}]])
 
@@ -91,12 +91,12 @@ def index():
     fig.add_trace(Bar(
                         x=["Weather", "Aid", "Infrastructure"],
                         y=counts[['weather_related', 'aid_related', 'infrastructure_related']]
-                    ),
+                    ), 
             1, 2)
 
     fig.update_layout(showlegend=False, title='Distribution of Messages by Type')
-
-
+    
+    
     graphs = [
         {
             'data': [
@@ -116,7 +116,7 @@ def index():
                 }
             }
         },
-
+        
         fig.to_dict()
     ]
 
