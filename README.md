@@ -40,12 +40,14 @@ The code has been developed and tested using the cited versions of the packages.
 
  ## How to run the app in Udacity Workspace
 
- The project is intended to be run in the Udacity Workspace. For this:
+ The project is intended to be run in the Udacity Workspace. Before running the project, please ensure that the latest version of plotly is installed in the workspace (it needs to be reinstalled every time the Workspace is initialized). This can be done by upgrading the package with the following command:
 
- 1. Open a Terminal
- 2. Enter the command `env | grep WORK` to find the current workspace variables
- 3. In the app\ folder, run the command `python run.py`
- 4. Open a new web browser window and go to the web address:
+ pip install plotly -U
+
+To run the code:
+ 1. In the terminal, enter the command `env | grep WORK` to find the current workspace variables
+ 2. In the app\ folder, run the command `python run.py`
+ 3. Open a new web browser window and go to the web address:
  `http://WORKSPACESPACEID-3001.WORKSPACEDOMAIN` replacing WORKSPACEID and WORKSPACEDOMAIN with relevant values from Step 1.
 
 
