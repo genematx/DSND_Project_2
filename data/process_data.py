@@ -64,12 +64,8 @@ def save_data(df, database_filename):
         None
     """
 
-    # Remove the file if it already exists
-    if os.path.exists(database_filename):
-        os.remove(database_filename)
-
     engine = create_engine('sqlite:///{}'.format(database_filename))
-    df.to_sql('merged', engine, index=False)
+    df.to_sql('merged', engine, index=False, if_exists='replace')
 
 
 def main():

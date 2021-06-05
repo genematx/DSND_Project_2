@@ -48,7 +48,7 @@ def classify(model, query):
             Results of classification with each entry correponding to a specific
             class in the order of columns in the original database.
     """
-    
+
     print('Classifying message \'{}\' ...'.format(query))
 
     return model.predict([query]).ravel()
@@ -91,12 +91,15 @@ def index():
     fig.add_trace(Bar(
                         x=["Weather", "Aid", "Infrastructure"],
                         y=counts[['weather_related', 'aid_related', 'infrastructure_related']]
-                    ), 
+                    ),
             1, 2)
 
-    fig.update_layout(showlegend=False, title='Distribution of Messages by Type')
-    
-    
+    fig.update_layout(showlegend=False,
+                  title='Distribution of Messages by Type',
+                  yaxis_title='Number of messages',
+                  xaxis_title='Related to ...')
+
+
     graphs = [
         {
             'data': [
@@ -116,7 +119,7 @@ def index():
                 }
             }
         },
-        
+
         fig.to_dict()
     ]
 

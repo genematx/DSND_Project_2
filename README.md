@@ -6,6 +6,12 @@
 
  The motivation for this project is to gain practical skills in creating and deploying ETL and ML pipelines. The main highlights of the project include handling data in the form of CSV files and a relational database, feature engineering with natural language processing tools, and training a set of support vector machine classifiers.
 
+ The title page:
+ ![Title page](screenshots/title.png)
+
+ An example of classification:
+ ![Classification](screenshots/classification.png)
+
 
  ## Installation <a name="installation"></a>
 
@@ -45,6 +51,6 @@ The code has been developed and tested using the cited versions of the packages.
 
  ## Acknowledgements
 
- The disaster relief dataset for this project was kindly provided by <a href="https://en.wikipedia.org/wiki/Figure_Eight_Inc./">Figure Eight</a>, a machine learning and artificial intelligence company, currently a part of <a href="https://appen.com/">Appen</a>.
+ The disaster relief dataset for this project was kindly provided by <a href="https://en.wikipedia.org/wiki/Figure_Eight_Inc.">Figure Eight</a>, a machine learning and artificial intelligence company, currently a part of <a href="https://appen.com/">Appen</a>.
 
  The help from contributors on the <a href="https://www.udacity.com/">Udacity</a> discussion board is gratefully acknowledged.
